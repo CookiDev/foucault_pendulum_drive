@@ -16,6 +16,8 @@ This program checks its actual state every millisecond. Possible states are:
 #define h1 A1
 #define h2 A2
 #define h3 A3
+#define h4 A4
+#define h5 A5
 const int relaisPin = 7;                    // pin of relais to control the pulling
 const int pendulumperiod = 7769;            //  2 Pi * root (L / g)
 // bool schub = true; use only for debuging
@@ -30,13 +32,15 @@ enum State {                                // possible states of the program wh
 State currentState = DECIDING;                              // for init
 unsigned long previousMillis = 0;                           // for init
 const unsigned long pullduration = pendulumperiod/4 - 500;  // in ms, puffer after pulling to prevent pulling to early
-const int tolerance = 10;                                   // the tolerance for the sensor input
+const int tolerance = 30;                                   // the tolerance for the sensor input
 
 void setup() {
   pinMode(h0, INPUT);
   pinMode(h1, INPUT);
   pinMode(h2, INPUT);
   pinMode(h3, INPUT);
+  pinMode(h4, INPUT);
+  pinMode(h5, INPUT);
   pinMode(relaisPin, OUTPUT);
   Serial.begin(9600);
 }
@@ -46,13 +50,19 @@ void loop() {
   int i1 = abs(analogRead(h1));
   int i2 = abs(analogRead(h2));
   int i3 = abs(analogRead(h3));
+  int i4 = abs(analogRead(h4));
+  int i5 = abs(analogRead(h5));
   Serial.print(i0);                             // send it to Serial for Raspi
   Serial.print(" ");
   Serial.print(i1);
   Serial.print(" ");
   Serial.print(i2);
   Serial.print(" ");
-  Serial.println(i3);                           
+  Serial.print(i3);
+  Serial.print(" ");
+  Serial.print(i4);
+  Serial.print(" ");
+  Serial.println(i5);                           
   unsigned long currentMillis = millis();       // get actual time in ms to decide the next step with the following switch
 
   switch (currentState) {
