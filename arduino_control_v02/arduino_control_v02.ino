@@ -76,13 +76,13 @@ void loop() {
       break;
 
     case ACTUATING:   // stop the pull
-      digitalWrite(relaisPin, LOW);
+      digitalWrite(relaisPin, HIGH);
       currentState = WAITING;
       break;
 
     case WAITING:    // wait until the pendulum is allowed to be pulled again and then start the pull
       if (currentMillis - previousMillis >= pendulumperiod / 4 - 500) {
-        digitalWrite(relaisPin, HIGH);
+        digitalWrite(relaisPin, LOW);
         currentState = PULLING;
         previousMillis = currentMillis;
       }
